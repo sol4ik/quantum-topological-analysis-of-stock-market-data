@@ -1,0 +1,16 @@
+```{r}
+library("TDAstats")
+data("unif2d")
+data("circle2d")
+
+# calculate persistent homology for both datasets
+unif.phom <- calculate_homology(unif2d)
+circ.phom <- calculate_homology(circle2d)
+
+# plot uniformly distributed point cloud as persistence diagram
+plot_persist(unif.phom)
+
+# plot circle point cloud as topological barcode
+# we see a single persistent bar, as expected for a circle (single 1-cycle/loop)
+plot_barcode(circ.phom)
+```
