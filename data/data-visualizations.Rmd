@@ -1,0 +1,44 @@
+---
+title: "Stock market crashes: data visualization"
+output: pdf_document
+---
+## Data description
+
+## Data visualizations
+```{r, echo=FALSE, message=FALSE}
+require(ggplot2)
+library(ggplot2)
+```
+
+### Wall Street crash of 1929
+```{r, message=FALSE}
+ws_data <- read.csv("./gspc/^GSPC-1929-Wall-Street-daily.csv")
+head(ws_data)
+```
+ 
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+plot_data <- ws_data
+plot_data$Color <- plot_data$Close
+plot_data$Color[169:211] <- rep(10, 205 - 185 + 1)
+
+ggplot(plot_data) +
+  geom_rect(aes(xmin=169, xmax=211, ymin = -Inf, ymax=Inf),
+            fill="pink", alpha=0.025) +
+  geom_line(aes(x = seq(1:nrow(plot_data)), y = Close, colour = Color - 10)) +
+  annotate(geom="text", x=190, y=17, label="Sep.03 - Oct.31",
+              color="black", size=7/2) +
+  labs(x = "Time, day", y="Stock price, $", title="P&S 500 index during Wall Street crash of 1929",
+       subtitle="based on data from Jan.2, 1929 until Dec.31, 1929") + 
+   theme(axis.text.x=element_blank(),
+         axis.ticks.x=element_blank(),
+         axis.ticks.y=element_blank(),
+         legend.position = "none")
+```
+
+### Crash of October 19, 1987
+
+### Crisis of 2008-2009
+
+### 2020 coronavirus stock market crash
+
