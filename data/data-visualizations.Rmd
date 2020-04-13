@@ -2,7 +2,52 @@
 title: "Stock market crashes: data visualization"
 output: pdf_document
 ---
+## Definition
+A **stock market crash** is a sudden dramatic decline of stock prices across a significant cross-section of a stock market, resulting in a significant loss of paper wealth. Crashes are driven by panic as much as by underlying economic factors. They often follow speculation and economic bubbles.
+
+There is **no numerically specific definition of a stock market crash** but the term commonly applies to steep double-digit percentage losses in a stock market index over a period of several days.
+
+## Historical cases 
+Even tough stock market itself has its origins far before 20th century, the greatest rises well as the greatest market crashes happened excatly in the 20th century.
+
+Here's the list of most popular and damageful cases that may be interesting for project as test cases.
+
+* Panic of 1907
+* Wall Street Crash of 1929
+* October 19, 1987
+* Crash of 2008–2009
+* 2010 flash crash
+* 2015–16 Chinese stock market turbulence
+
 ## Data description
+For the projet I use data on **Dow-Jones** and **S&P 500 Industrial averages** for certain time periods from Yahoo! Finance.
+
+> **The Dow Jones Industrial Average (DJIA)** (ticker symbol **^DJI**), is a stock market index that measures the stock performance of 30 large companies listed on stock exchanges in the United States. 
+
+> **The S&P 500** (ticker symbol **^GSPC**) is a stock market index that measures the stock performance of 500 large companies listed on stock exchanges in the United States. It is one of the most commonly followed equity indices, and many consider it to be one of the best representations of the U.S. stock market.
+
+As test data I chose the following cases and related data:
+
+* Wall Street Crash
+  + ^GSPC from Jan 01 until Dec 31 1929
+* Black Monday Crash
+  + ^GSPC from June 01 until Dec 31 1987
+  + ^DJI from June 01 until Dec 31 1987
+* Crisis of 2007-2008
+  + ^GSPC from Jan 03 until Dec 31 2008
+  + ^DJI from Jan 03 until Dec 31 2008
+* 2020 Coronavirus stock market crash
+  + ^GSPC from Feb 03 until Apr 01 2020
+  + ^DJI from Feb 03 until Apr 01 2020
+
+Here's a short look at sample data file:
+```{r}
+sample_data <- read.csv("^DJI-sample.csv")
+head(sample_data, 3)
+```
+All the files are of **.csv** format and contain the following columns: **Date, Open, High, Low, Close, Adj.Close, Volume**.
+
+Date value corresponds to the date of day on stock market while the rest of columns except for the last one correspond to certain price values. Open column holds the strating value of stock price on the day, Close - respectively the closing price. High and Low represent respectively the greatest and lowest values of stock price in a day. Adj.Close - adjusted closing price and Volume is total numberof shares that were bought or sold on the day.
 
 ## Data visualizations
 ```{r, echo=FALSE, message=FALSE}
@@ -11,13 +56,10 @@ library(ggplot2)
 ```
 
 ### Wall Street crash of 1929
-```{r, message=FALSE}
-ws_data <- read.csv("./gspc/^GSPC-1929-Wall-Street-daily.csv")
-head(ws_data)
-```
  
-
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
+ws_data <- read.csv("./gspc/^GSPC-1929-Wall-Street-daily.csv")
+
 plot_data <- ws_data
 plot_data$Color <- plot_data$Close
 plot_data$Color[169:211] <- rep(10, 205 - 185 + 1)
@@ -28,17 +70,149 @@ ggplot(plot_data) +
   geom_line(aes(x = seq(1:nrow(plot_data)), y = Close, colour = Color - 10)) +
   annotate(geom="text", x=190, y=17, label="Sep.03 - Oct.31",
               color="black", size=7/2) +
-  labs(x = "Time, day", y="Stock price, $", title="P&S 500 index during Wall Street crash of 1929",
-       subtitle="based on data from Jan.2, 1929 until Dec.31, 1929") + 
+  labs(x = "Time, day", y="Index value", title="S&P 500 index during Wall Street crash of 1929",
+       subtitle="based on data from Jan 02, 1929 until Dec 31, 1929") + 
    theme(axis.text.x=element_blank(),
          axis.ticks.x=element_blank(),
          axis.ticks.y=element_blank(),
          legend.position = "none")
 ```
 
-### Crash of October 19, 1987
+There is no visulization on **Dow-Jones index** value during Wall Street crash because the data on Dow-Jones index starts on only from 1985 on Yahoo! Finance (although the index itsef existed at that time). 
 
-### Crisis of 2008-2009
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+oct_data <- read.csv("./dji/^DJI-oct-1989-daily.csv")
 
-### 2020 coronavirus stock market crash
+plot_data <- oct_data
+plot_data$Color <- plot_data$Close
+plot_data$Color[90:108] <- rep(10, 205 - 185 + 1)
 
+ggplot(plot_data) +
+  geom_rect(aes(xmin=90, xmax=108, ymin = -Inf, ymax=Inf),
+            fill="pink", alpha=0.025) +
+  geom_line(aes(x = seq(1:nrow(plot_data)), y = Close, colour = Color - 10)) +
+  annotate(geom="text", x=99, y=1700, label="Oct.10 - Oct.30",
+            color="black", size=7/2) +
+  labs(x = "Time, day", y="Index value", title="Dow Jones index during Black Monday(Oct 19, 1929)",
+       subtitle="based on data from Jun 01, 1987 until Dec 31, 1987") + 
+   theme(axis.text.x=element_blank(),
+         axis.ticks.x=element_blank(),
+         axis.ticks.y=element_blank(),
+         legend.position = "none")
+```
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+oct_data <- read.csv("./gspc/^GSPC-oct-1989-daily.csv")
+
+plot_data <- oct_data
+plot_data$Color <- plot_data$Close
+plot_data$Color[90:108] <- rep(10, 205 - 185 + 1)
+
+ggplot(plot_data) +
+  geom_rect(aes(xmin=90, xmax=108, ymin = -Inf, ymax=Inf),
+            fill="pink", alpha=0.025) +
+  geom_line(aes(x = seq(1:nrow(plot_data)), y = Close, colour = Color - 10)) +
+  annotate(geom="text", x=99, y=220, label="Oct.10 - Oct.30",
+            color="black", size=7/2) +
+  labs(x = "Time, day", y="Index value", title="S&P 500 index during Black Monday(Oct 19, 1929)",
+       subtitle="based on data from Jun 01, 1987 until Dec 31, 1987") + 
+   theme(axis.text.x=element_blank(),
+         axis.ticks.x=element_blank(),
+         axis.ticks.y=element_blank(),
+         legend.position = "none")
+```
+
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+crisis_data <- read.csv("./dji/^DJI-2008-daily.csv")
+
+plot_data <- crisis_data
+plot_data$Color <- plot_data$Close
+plot_data$Color[125:145] <- rep(10, 135 - 108 + 1)
+
+ggplot(plot_data) +
+  geom_rect(aes(xmin=125, xmax=145, ymin = -Inf, ymax=Inf),
+            fill="pink", alpha=0.025) +
+  geom_line(aes(x = seq(1:nrow(plot_data)), y = Close, colour = Color - 10)) +
+  annotate(geom="text", x=135, y=7900, label="November\n (crash peek)",
+            color="black", size=7/2) +
+  labs(x = "Time, day", y="Index value", title="Dow-Jones index during Crisis of 2008-2009",
+       subtitle="based on data from Jun 01, 1987 until Dec 31, 1987") + 
+   theme(axis.text.x=element_blank(),
+         axis.ticks.x=element_blank(),
+         axis.ticks.y=element_blank(),
+         legend.position = "none")
+```
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+crisis_data <- read.csv("./gspc/^GSPC-2008-daily.csv")
+
+plot_data <- crisis_data
+plot_data$Color <- plot_data$Close
+plot_data$Color[125:145] <- rep(10, 135 - 108 + 1)
+
+ggplot(plot_data) +
+  geom_rect(aes(xmin=125, xmax=145, ymin = -Inf, ymax=Inf),
+            fill="pink", alpha=0.025) +
+  geom_line(aes(x = seq(1:nrow(plot_data)), y = Close, colour = Color - 10)) +
+  annotate(geom="text", x=135, y=775, label="November\n (crash peek)",
+            color="black", size=7/2) +
+  labs(x = "Time, day", y="Index value", title="Dow-Jones index during Crisis of 2008-2009",
+       subtitle="based on data from Jun 01, 1987 until Dec 31, 1987") + 
+   theme(axis.text.x=element_blank(),
+         axis.ticks.x=element_blank(),
+         axis.ticks.y=element_blank(),
+         legend.position = "none")
+```
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+corona_data <- read.csv("./dji/^DJI-feb-2020-corona-daily.csv")
+
+plot_data <- corona_data
+plot_data$Color <- plot_data$Close
+plot_data$Color[35:57] <- rep(10, 35 - 12 )
+
+ggplot(plot_data) +
+  geom_rect(aes(xmin=35, xmax=57, ymin = -Inf, ymax=Inf),
+            fill="pink", alpha=0.025) +
+  geom_line(aes(x = seq(1:nrow(plot_data)), y = Close, colour = Color - 10)) +
+  annotate(geom="text", x=45, y=19000, label="Feb.20 - Mar.23",
+            color="black", size=4) +
+  labs(x = "Time, day", y="Index value", title="Dow-Jones index during 2020 Coronavirus pandemic beginning",
+       subtitle="based on data from Feb 03, 1987 until Apr 04, 2020") + 
+   theme(axis.text.x=element_blank(),
+         axis.ticks.x=element_blank(),
+         axis.ticks.y=element_blank(),
+         legend.position = "none")
+```
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+corona_data <- read.csv("./gspc/^GSPC-feb-2020-corona-daily.csv")
+
+plot_data <- corona_data
+plot_data$Color <- plot_data$Close
+plot_data$Color[35:57] <- rep(10, 35 - 12 )
+
+ggplot(plot_data) +
+  geom_rect(aes(xmin=35, xmax=57, ymin = -Inf, ymax=Inf),
+            fill="pink", alpha=0.025) +
+  geom_line(aes(x = seq(1:nrow(plot_data)), y = Close, colour = Color - 10)) +
+  annotate(geom="text", x=45, y=2250, label="Feb.20 - Mar.23",
+            color="black", size=4) +
+  labs(x = "Time, day", y="Index value", title="S&P 500 index during 2020 Coronavirus pandemic beginning",
+       subtitle="based on data from Feb 03, 1987 until Apr 04, 2020") + 
+   theme(axis.text.x=element_blank(),
+         axis.ticks.x=element_blank(),
+         axis.ticks.y=element_blank(),
+         legend.position = "none")
+```
+     
+
+
+## References
+1. [**Stock market info**](https://en.wikipedia.org/wiki/Stock_market_crash)
+2. [**Dow-Jones index**](https://en.wikipedia.org/wiki/Dow_Jones_Industrial_Average)
+3. [**S&P 500 index**](https://en.wikipedia.org/wiki/S%26P_500_Index)
+4. Data source - [**Yahoo! Finance**](https://finance.yahoo.com/)
+
+All the visuals are done by Solomiia Leno.
