@@ -26,12 +26,15 @@ Thus **n** quantum bits allow us to store all **2^n** possible topologiacl stuct
 
 Same principle allows one to perform **parallel** computations, in our case - computation of topological model (pairwise distances between data pieces).
 
+One more import factor is **memory**. 
+
 ## algorithm
+
 
 ## implementation details
 
 ## data and testing
-As testing data I chose 4 significant histirical cases of stock market crashes: Wall Street crash, Black Monday crash, Crisis of 2008 and 2020 Corobavirus crash.
+As testing data I chose 4 significant histirical cases of stock market crashes: Wall Street crash, Black Monday crash, Crisis of 2008 and 2020 Coronavirus crash.
 
 All the data is stored in **.csv** files and contains info on values of **Dow-Jones** and **S&P 500 indexes** on the time periods of the crashes.
 
@@ -40,9 +43,15 @@ You can find the data files as well as more detailed description and visualizati
 ## references
 You can find more detailed report on the project [**here**](https://sol4ik.github.io/AoCS-report/).
 
+Here is the [**link**](https://docs.google.com/presentation/d/16S5xK0NhVxzvIlZIi0GVV4fMD2bYA7v2nEAYY3zeXXA/edit?usp=sharing) to my project presentation.
+
 All the test data are downloaded from **Yahoo! Finance**.
 
 Some of the sources I worked with:
 - Vakarchuk I. Quantum mechanics. Lviv State University of Ivan Franko; 1998. 614 p.
 - Lloyd, Seth & Garnerone, Silvano & Zanardi, Paolo. (2014). Quantum algorithms for topological and geometric analysis of big data. Nature Communications. 10.1038/ncomms10138. 
   - [**link**](https://www.researchgate.net/publication/264742794_Quantum_algorithms_for_topological_and_geometric_analysis_of_big_data/citation/download)
+- Detecting stock marketcrashes with topological data analysis
+  - [**link**](https://towardsdatascience.com/detecting-stock-market-crashes-with-topological-data-analysis-7d5dd98abe42)
+- Persistent homology with examples
+  - [**link**](https://towardsdatascience.com/persistent-homology-with-examples-1974d4b9c3d0)
