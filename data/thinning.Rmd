@@ -1,0 +1,42 @@
+```{r}
+library(ggplot2)
+
+gspc_data <- read.csv("gspc/^GSPC-max-daily.csv")
+
+gspc_data$PrevClose <- gspc_data$Close
+gspc_data <- na.omit(transform(gspc_data, PrevClose = c(NA, PrevClose[-nrow(gspc_data)])))
+gspc_data$DailyRet <- with(gspc_data, Close / PrevClose - 1)
+
+# day to day change
+ggplot(gspc_data, aes(x = DailyRet)) +
+  geom_histogram(aes(y=..density..), color="gold4", fill="gold1") +
+  labs(x = "day to day change",
+       title = "S&P 500 Index",
+       subtitle="based on data from Dec 30, 1927 - May 14, 2020") +
+  theme(axis.title.y=element_blank(),
+        axis.ticks.y=element_blank(),
+        axis.text.y=element_blank())
+```
+
+```{r}
+gspc_w_data <- read.csv("gspc/^GSPC-max-weekly.csv")
+
+gspc_w_data$Close <- as.double(gspc_w_data$Close)
+gspc_w_data$PrevClose <- gspc_w_data$Close
+gspc_w_data <- na.omit(transform(gspc_w_data, PrevClose = c(NA, PrevClose[-nrow(gspc_w_data)])))
+gspc_w_data$WeekRet <- with(gspc_w_data, Close / PrevClose - 1)
+
+# to check any data loss
+ggplot(gspc_w_data) +
+  geom_line(aes(x = seq(1:nrow(gspc_w_data)), y = Close))
+
+# week to week change
+ggplot(gspc_w_data, aes(x = WeekRet)) +
+  geom_histogram(aes(y=..density..), color="salmon3", fill="salmon1") +
+  labs(x = "week to week change",
+       title = "S&P 500 Index",
+       subtitle="based on data from Dec 30, 1927 - May 14, 2020") +
+  theme(axis.title.y=element_blank(),
+        axis.ticks.y=element_blank(),
+        axis.text.y=element_blank())
+```
