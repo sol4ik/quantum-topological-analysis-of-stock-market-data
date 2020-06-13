@@ -29,9 +29,10 @@ Same principle allows one to perform **parallel** computations, in our case - co
 One more import factor is **memory**. 
 
 ## algorithm
-
+Detailed explanation of TDA based analysis of stock market crashes along with Python code is in the **experimets/algorithm.ipynb** Jupyter notebook.
 
 ## implementation details
+The quantum algorithm is implemented with [IBM Quantum Experience](https://quantum-computing.ibm.com/) as well as plain Python code.
 
 ## data and testing
 As testing data I chose 4 significant histirical cases of stock market crashes: Wall Street crash, Black Monday crash, Crisis of 2008 and 2020 Coronavirus crash.
