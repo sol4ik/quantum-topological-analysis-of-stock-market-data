@@ -1,6 +1,8 @@
 from pandas import read_csv
 from numpy import arccos, arcsin, pi, round
 
+from itertools import combinations
+
 
 def norm(vect):
     """
@@ -12,6 +14,19 @@ def norm(vect):
     for i in range(len(vect)):
         norm += vect[i] ** 2
     return norm ** 0.5
+
+
+def distance(a, b):
+    """
+    Calculate Eucledian distance between two vectors from R^n.
+    :param a: n-element tuple - vector in R^n
+    :param b: n-element tuple - vector in R^n
+    :return: float value - Eucledian distance between a and b
+    """
+    dist = 0
+    for i in range(len(a)):
+        dist += (a[i] - b[i]) ** 2
+    return dist ** 0.5
 
 
 def to_angles(vect):

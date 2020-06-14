@@ -1,15 +1,12 @@
 from qiskit import IBMQ, QuantumCircuit, execute, Aer
 from qiskit.visualization import plot_histogram
 
-from preprocessing import preprocess
-from quantum import config_circuit, distance, persistence_homology
+from quantum import config_circuit, distance
 
 from itertools import combinations
 
 
 if __name__ == "__main__":
-    preprocess("../data/gspc/^GSPC-feb-2020-corona-daily.csv")
-
     with open("ibmq_token.txt", 'r') as token_file:
         token = token_file.readline()
     IBMQ.save_account(token, overwrite=True)
@@ -17,7 +14,7 @@ if __name__ == "__main__":
     # specify any other IBM Q backend you want to use
     simulator = Aer.get_backend('qasm_simulator')
 
-    with open("results/circuit_conf.csv") as conf_file:
+    with open("results/test_conf.csv") as conf_file:
         n_points = len(conf_file.readlines()) - 1
 
     all_pairs = list(combinations(range(n_points), 2))
@@ -28,15 +25,14 @@ if __name__ == "__main__":
     circuit = QuantumCircuit(n_qubits, n_qubits)
 
     # data preparation
-    config_circuit(circuit, "results/circuit_conf.csv")
+    config_circuit(circuit, "results/test_conf.csv")
 
     c_bit = n_points  # control bits counter
     for i in range(n_pairs):
         distance(circuit, c_bit, all_pairs[i][0], all_pairs[i][1])
         c_bit += 1
 
-    # persistence homology calculations
-    persistence_homology(circuit, n_qubits)
+    circuit.measure(2)
 
     # run IBM Q circuit and get results
     job = execute(circuit, simulator, shots=1000)

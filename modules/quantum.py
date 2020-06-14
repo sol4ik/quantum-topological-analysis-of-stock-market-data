@@ -24,7 +24,6 @@ def config_circuit(circuit, config_file):
             b = float(line[comma + 1:comma_2])
             phi = float(line[comma_2 + 1:])
 
-            print(q)
             circuit.u3(pi * a, pi * b, pi * phi, q)
             q += 1
 
@@ -35,6 +34,7 @@ def distance(circuit, c_bit, a, b):
 
     Based on DistCalc from  Quantum Machine Learning for data scientists.
 
+    !!! Not possible to run with current version of IBM Q API.
     :param circuit: IBM Q circuit object
     """
     # controlled swap operator 6x6
@@ -65,25 +65,7 @@ def grovers_search(circuit, n_qubits):
     :param circuit: IBM Q circuit object
     :param n_qubits: number of qubits on the circuit
     """
-    circuit.x(0)
-    circuit.x(1)
-    circuit.x(2)
-
-    circuit.h(0)
-    circuit.cx(1, 0)
-    circuit.cx(2, 0)
-
-    circuit.h(0)
-    circuit.id(1)
-    circuit.id(2)
-
-    circuit.x(0)
-    circuit.x(1)
-    circuit.x(2)
-
-    circuit.h(0)
-    circuit.h(1)
-    circuit.h(2)
+    pass
 
 
 def persistence_homology(circuit, n_qubits):
