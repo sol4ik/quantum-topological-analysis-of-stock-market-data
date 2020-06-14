@@ -7,12 +7,13 @@ Here is a short description of the final project for Architecture of Computer Sy
 2. [topological data analysis](#topological-data-analysis)
 3. [why quantum?](#why-quantum)
 4. [algorithm](#algorithm)
-5. [implementation details](#implementation-details)
+5. [quantum algorithm](#quantum-algorithm)
+6. [implementation details](#implementation-details)
     1. [limitations](#limitations)
     2. [circuits](#circuits)
-6. [data and testing](#data-and-testing)
-7. [usage](#usage)
-8. [references](#references)
+7. [data and testing](#data-and-testing)
+8. [usage](#usage)
+9. [references](#references)
 
 ## aim of project
 The aim of the project is to implement **quantum algorithm for detecting possible time allocaions of stock market crashes using topological data analysis** on IBM Quantum Experience API for **quantum computers**.
@@ -35,6 +36,21 @@ All in all, total time complexity of quantum inplementation of persistent homolo
 The algorithm is based on the **perisitent homology** approach to data analysis. As topological indicator **Betti numbers** are chosen (usually this method produces very noisy data but it is the most convenient algorithm for quantisation).
 
 Detailed explanation of TDA based analysis of stock market crashes along with Python code is in the [**experimets/algorithm.ipynb**](https://github.com/sol4ik/quantum-computing/blob/master/experiments/algorithm.ipynb) Jupyter notebook.
+
+## quantum algorithm
+Main reference for the quantum algorithm development was **Quantum algorithms for topological and geometric analysis of big data** by S.Lloyd (link in the [references section](#references)).
+
+First step in the algorithm pipeline is to **process the input data** using classical computer. The steps are the following:
+
+1. download the data on stock prices from Yahoo! Finance and save in the **.csv** format
+2. load the data and store the values of `Close` price only
+  * it is a common practice to use Close values when working with stock market data
+3. create data cloud with **Takens' embedding** algorithm
+  * the **embedding dimension** must be **a power of 2**
+  * in the implementation presented, `embedding_dim = 2`
+4. **normalize** the data cloud
+  * consider each point as a vector from ![R^n](https://bit.ly/3e1mSKt) and normalize it to be of unit length
+
 
 ## implementation details
 The quantum algorithm is implemented with [IBM Quantum Experience](https://quantum-computing.ibm.com/) as well as plain Python code.
@@ -73,10 +89,10 @@ You can find the data files as well as more detailed description and visualizati
 ## usage
 In order to try the software developed you need to clone this repository and run the following commands in the terminal
 
-    cd quantum-comuting\modules
+    cd quantum-comuting/modules
   
     virtualenv venv
-    sourse venc/bin/activate
+    sourse venv/bin/activate
   
     pip install -r requirements.txt
   
