@@ -1,16 +1,39 @@
-```{r}
+# Topological data analysis of standart datasets
+
+This notebook is a test for topologocal data analysis technique - **persistent homology**.
+
+The datasets that are used for the test are standart R datasets `unif2d` and `circle2d`.
+
+### Load library
+```{r, message=FALSE}
+require("TDAstats")
 library("TDAstats")
+```
+
+### Load the datasets
+```{r}
 data("unif2d")
 data("circle2d")
+```
 
-# calculate persistent homology for both datasets
+### Calculate persistent homology
+
+Standart R package called `TDAstats` is used for pesistent homology calculations.
+```{r}
 unif.phom <- calculate_homology(unif2d)
 circ.phom <- calculate_homology(circle2d)
-
-# plot uniformly distributed point cloud as persistence diagram
-plot_persist(unif.phom)
-
-# plot circle point cloud as topological barcode
-# we see a single persistent bar, as expected for a circle (single 1-cycle/loop)
-plot_barcode(circ.phom)
 ```
+
+Next step is to calculate and plot the **persistence diagram**.
+
+Persistence diagram for **unif2d** dataset.
+```{r}
+plot_persist(unif.phom)
+```
+
+Persistence diagram for **circle2d** dataset.
+```{r}
+plot_persist(circ.phom)
+```
+
+This plot look is expected as full circle appears only one within the data.
