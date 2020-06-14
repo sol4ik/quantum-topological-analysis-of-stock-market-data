@@ -12,16 +12,16 @@ if __name__ == "__main__":
 
     with open("ibmq_token.txt", 'r') as token_file:
         token = token_file.readline()
-    IBMQ.save_account(token, ovewrite=True)
+    IBMQ.save_account(token, overwrite=True)
 
     # specify any other IBM Q backend you want to use
     simulator = Aer.get_backend('qasm_simulator')
 
-    with open("results/circuit_conf.csv") as conf_file:
+    # with open("results/circuit_conf.csv") as conf_file:
+    with open("results/test_conf.csv") as conf_file:
         n_points = len(conf_file.readlines()) - 1
 
     all_pairs = list(combinations(range(n_points), 2))
-    print(all_pairs)
 
     n_pairs = len(all_pairs)
     n_qubits = n_points + n_pairs
@@ -31,7 +31,7 @@ if __name__ == "__main__":
     # data preparation
     config_circuit(circuit, "results/circuit_conf.csv")
 
-    c_bit = n_qubits  # control bits counter
+    c_bit = n_points  # control bits counter
     for i in range(n_pairs):
         distance(circuit, c_bit, all_pairs[i][0], all_pairs[i][1])
         c_bit += 1

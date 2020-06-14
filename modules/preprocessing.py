@@ -22,17 +22,15 @@ def to_angles(vect):
     |s> = a |0> + b |1>
     |s> = cos (a` / 2) |0> + e^(i * phi) sin (a` / 2) |1>
     Since a and b are real numbers, phi = 0.
-    Thus a` = 2 * arccos(a) and b = 2 * arcsin(a)
+    Thus a` = 2 * arccos(a)
 
     Represent each angle within pi.
     :param vect: input point
     :return: 2-element tuple - values of angles (a, b)
     """
     a = 2 * arccos(vect[0])
-    b = 2 * arcsin(vect[1])
     pi_a = round(a / pi, 3)
-    pi_b = round(b / pi, 3)
-    return pi_a, pi_b, 0
+    return pi_a, 0, 0
 
 
 def preprocess(path):

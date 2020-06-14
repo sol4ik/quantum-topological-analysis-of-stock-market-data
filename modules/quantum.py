@@ -24,6 +24,7 @@ def config_circuit(circuit, config_file):
             b = float(line[comma + 1:comma_2])
             phi = float(line[comma_2 + 1:])
 
+            print(q)
             circuit.u3(pi * a, pi * b, pi * phi, q)
             q += 1
 
