@@ -8,6 +8,8 @@ Here is a short description of the final project for Architecture of Computer Sy
 3. [why quantum?](#why-quantum)
 4. [algorithm](#algorithm)
 5. [implementation details](#implementation-details)
+    1. [limitations](#limitations)
+    2. [circuits](#circuits)
 6. [data and testing](#data-and-testing)
 7. [usage](#usage)
 8. [references](#references)
@@ -47,12 +49,26 @@ All the source code can be found in the **modules** directory.
 * **main.py**
   * brings all the functional together and manages the access to IBMQ backend
 
+### limitations
+When it comes to implementing the quantum persistent homology algorithm several limitations arise.
+
+* due coherence and high error rate it is possible to get concenient results only by working with **5-qubit** computers or **simulation**
+  * thus, it is possible to process **only three 2-dimnesional points** within the quantum implementation of the algorithm 
+* IBM Q API **does not allow one to create custom gate for 3 qubits** which is needed for distances calculations
+* again, due to lack of computational accuracy and **qRAM** it is impossible to conveniently implement the calculation of quantum density matrix needed for further calculations of Betti numbers
+
+### circuits
+Since not all of the algorithm can be implemented within IBM Quantum Experience API, I worked on several smaller circuits.
+
+You can find the ciruits schemas in the **citcuits** directory.
+
 ## data and testing
 As testing data I chose 4 significant histirical cases of stock market crashes: Wall Street crash, Black Monday crash, Crisis of 2008 and 2020 Coronavirus crash.
 
 All the data is stored in **.csv** files and contains info on values of **Dow-Jones** and **S&P 500 indexes** on the time periods of the crashes.
 
 You can find the data files as well as more detailed description and visualizations in this repo - **data** directory.
+
 
 ## usage
 In order to try the software developed you need to clone this repository and run the following commands in the terminal
