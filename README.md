@@ -42,37 +42,39 @@ Main reference for the quantum algorithm development was **Quantum algorithms fo
 
 First step in the algorithm pipeline is to **process the input data** using classical computer. The steps are the following:
 
-1. download the data on stock prices from Yahoo! Finance and save in the **.csv** format
+1. download the data on stock prices from **Yahoo! Finance** and save in the **.csv** format
 2. load the data and store the values of `Close` price only
-  * it is a common practice to use Close values when working with stock market data
+    * it is a common practice to use Close values when working with stock market data
 3. create data cloud with **Takens' embedding** algorithm
-  * the **embedding dimension** must be **a power of 2**
-  * in the implementation presented, `embedding_dim = 2`
+    * the **embedding dimension** must be **a power of 2**
+    * in the implementation presented, `embedding_dim = 2`
 4. **normalize** the data cloud
-  * consider each point as a vector from ![R^n](https://latex.codecogs.com/gif.latex?%5Cmathbb%7BR%7D%5En) and normalize it to be of unit length
+    * consider each point as a vector from ![R^n](https://latex.codecogs.com/gif.latex?%5Cmathbb%7BR%7D%5En) and normalize it to be of unit length
 5. express each data point as inpput alngles for **U3 gates**
-  * **U3** is a quantum gate that allows one to set qubit to any possible state. U3 is denoted by the following rotation matrix
+    * **U3** is a quantum gate that allows one to set qubit to any possible state. U3 is denoted by the following rotation matrix
   
     ![U3 matrix](https://latex.codecogs.com/gif.latex?U3%28%5Ctheta%2C%20%5Cphi%2C%20%5Calpha%29%20%3D%20%5Cbegin%7Bpmatrix%7D%20cos%28%5Cfrac%7B%5Ctheta%7D%7B2%7D%29%20%26%20-e%5E%7Bi%5Calpha%7D%20sin%28%5Cfrac%7B%5Ctheta%7D%7B2%7D%29%5C%5C%20e%5E%7Bi%20%5Cphi%7D%20sin%28%5Cfrac%7B%5Ctheta%7D%7B2%7D%29%20%26%20e%5E%7Bi%28%5Calpha%20&plus;%20%5Cphi%29%7D%20cos%28%5Cfrac%7B%5Ctheta%7D%7B2%7D%29%20%5Cend%7Bpmatrix%7D)
-  * since this gate is applied to **|0>** state, the resulting state looks as following
+    * since this gate is applied to **|0>** state, the resulting state looks as following
   
     ![quantum state](https://latex.codecogs.com/gif.latex?%7C%5Cpsi_0%3E%20%3D%20cos%28%5Ctheta/_2%29%20&plus;%20e%5E%7Bi%5Cphi%7D%20sin%28%5Ctheta/_2%29)
-  * thus, since we start with |0> state ![alpha = 0](https://latex.codecogs.com/gif.latex?%5Calpha%20%3D%200) and ![phi = 0](https://latex.codecogs.com/gif.latex?%5Cphi%20%3D%200) because both coordinates of data point are real numbers
+    * thus, since we start with |0> state ![alpha = 0](https://latex.codecogs.com/gif.latex?%5Calpha%20%3D%200) and ![phi = 0](https://latex.codecogs.com/gif.latex?%5Cphi%20%3D%200) because both coordinates of data point are real numbers
 6. create the IBM Q circuit with needed amount of quantum bits
-  * it is possible to have as many as **32** quantum bits in the circuit, but if you want to get convenient results with quantum computer you are limited with only **5** quantum bits due to coherence
-  * this way you are limited to only **3 2-dimensional** data points
+    * it is possible to have as many as **32** quantum bits in the circuit, but if you want to get convenient results with quantum computer you are limited with only **5** quantum bits due to coherence
+    * this way you are limited to only **3 2-dimensional** data points
 7. set quantum bits to needed states with **U3** gates
 8. calculate pairwise distances between the data points
-  * set as **a** and **b** quantum states denoting hte points we want to calculate the distance between and **0** as the state of contol bit, the one the distance will be calculated to
+    * set as **a** and **b** quantum states denoting hte points we want to calculate the distance between and **0** as the state of contol bit, the one the distance will be calculated to
   
     ![distance calulation](https://latex.codecogs.com/gif.latex?%5C%5C%20%7C%5Cpsi_0%3E%20%3D%20%7Ca%2C%20b%2C%200%3E%20%5C%5C%20%5Ctext%7Bapply%20%5Ctextbf%7BHadamar%7D%20gate%20to%20control%20bit%7D%20%5C%5C%20%7C%5Cpsi_1%3E%20%3D%20%5Cfrac%7B1%7D%7B%5Csqrt%7B2%7D%7D%28%7Ca%2C%20b%2C%200%3E%20&plus;%20%7Ca%2C%20b%2C%201%3E%29%20%5C%5C%20%5Ctext%7Bapply%20%5Ctextbf%7Bcontrolled%20swap%7D%20operator%20to%20%5Ctextbf%7Ba%7D%20and%20%5Ctextbf%7Bb%7D%7D%20%5C%5C%20%5Ctext%7Bcontrolled%20swap%20operator%20takes%20in%203-bit%20quantum%20state%20and%20%5Ctextbf%7Bswaps%20first%20two%7D%20if%20the%20last%20one%20is%20%5Ctextbf%7B1%7D%7D%20%5C%5C%20%7C%5Cpsi_2%3E%20%3D%20%5Cfrac%7B1%7D%7B%5Csqrt%7B2%7D%7D%28%7Ca%2C%20b%2C%200%3E%20&plus;%20%7Cb%2C%20a%2C%201%3E%29%20%5C%5C%20%5Ctext%7Bapply%20%5Ctextbf%7BHadamar%7D%20gate%20to%20control%20bit%7D%20%5C%5C%20%7C%5Cpsi_2%3E%20%3D%20%5Cfrac%7B1%7D%7B2%7D%7C0%3E%28%7Ca%2C%20b%3E%20&plus;%20%7Cb%2C%20a%3E%29%20&plus;%20%5Cfrac%7B1%7D%7B2%7D%7C1%3E%28%7Ca%2C%20b%3E%20&plus;%20%7Cb%2C%20a%3E%29)
-* now, the control bit is in the quantum state denoting distance between **a** and **b**
+    * now, the control bit is in the quantum state denoting distance between **a** and **b**
 9. contruct **simplicial complex** from the pairwise distances between points
-  * **Grover's search algorithm** is used for this task
-  * you can find detailed description of Grover's search [here](https://quantum-computing.ibm.com/docs/guide/q-algos/grover-s-algorithm)
-  * main idea is to implement Grover's algorithm with **oracle** that allows multiple solutions, since multiple simplicial complexes can be cinstructed from a single data cloud
+    * **Grover's search algorithm** is used for this task
+    * you can find detailed description of Grover's search [here](https://quantum-computing.ibm.com/docs/guide/q-algos/grover-s-algorithm)
+    * main idea is to implement Grover's algorithm with **oracle** that allows multiple solutions, since multiple simplicial complexes can be cinstructed from a single data cloud
 10. perform **quantum persistent homology** algorithm  
-
+11. plot the **Betti curve**, set **threshold value** and detect time periods when the crash happened
+    * Betti curves produce quite noisy results and thus good crash estimation depends on threshold value chosen
+    * in the implementation proposed `threshold = 0.3`
 ## implementation details
 The quantum algorithm is implemented with [IBM Quantum Experience](https://quantum-computing.ibm.com/) as well as plain Python code.
 
