@@ -75,4 +75,3 @@ def persistence_homology(circuit, n_qubits):
     :param n_qubits: number of qubits on the circuit
     """
     grovers_search(circuit, n_qubits)
-
