@@ -60,7 +60,7 @@ First step in the algorithm pipeline is to **process the input data** using clas
     * thus, since we start with |0> state ![alpha = 0](https://latex.codecogs.com/gif.latex?%5Calpha%20%3D%200) and ![phi = 0](https://latex.codecogs.com/gif.latex?%5Cphi%20%3D%200) because both coordinates of data point are real numbers
 6. create the IBM Q circuit with needed amount of quantum bits
     * it is possible to have as many as **32** quantum bits in the circuit, but if you want to get convenient results with quantum computer you are limited with only **5** quantum bits due to coherence
-    * this way you are limited to only **3 2-dimensional** data points
+    * this way you are limited to only **2 2-dimensional** data points
 7. set quantum bits to needed states with **U3** gates
 8. calculate pairwise distances between the data points
     * set as **a** and **b** quantum states denoting hte points we want to calculate the distance between and **0** as the state of contol bit, the one the distance will be calculated to
