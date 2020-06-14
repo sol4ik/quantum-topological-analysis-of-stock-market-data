@@ -89,6 +89,8 @@ Some of the sources I worked with:
 - Vakarchuk I. Quantum mechanics. Lviv State University of Ivan Franko; 1998. 614 p.
 - Lloyd, Seth & Garnerone, Silvano & Zanardi, Paolo. (2014). Quantum algorithms for topological and geometric analysis of big data. Nature Communications. 10.1038/ncomms10138. 
   - [**link**](https://www.researchgate.net/publication/264742794_Quantum_algorithms_for_topological_and_geometric_analysis_of_big_data/citation/download)
+- Dawid Kopczyk. (2018). Quantum machine learning for data scientists
+  - [**link**](https://arxiv.org/pdf/1804.10068.pdf)
 - Detecting stock market crashes with topological data analysis
   - [**link**](https://towardsdatascience.com/detecting-stock-market-crashes-with-topological-data-analysis-7d5dd98abe42)
 - Persistent homology with examples
