@@ -12,6 +12,7 @@ def config_circuit(circuit, config_file):
     """
     # counter for quantum bits
     q = 0
+
     with open(config_file, 'r') as file:
         for line in file.read_lines()[1:]:
             comma = line.index(',')
