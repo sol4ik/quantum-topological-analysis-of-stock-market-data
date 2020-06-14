@@ -30,9 +30,9 @@ def to_angles(vect):
     """
     a = 2 * arccos(vect[0])
     b = 2 * arcsin(vect[1])
-    pi_a = "pi*" + str(round(a / pi, 3))
-    pi_b = "pi*" + str(round(b / pi, 3))
-    return pi_a, pi_b, "pi*0"
+    pi_a = round(a / pi, 3)
+    pi_b = round(b / pi, 3)
+    return pi_a, pi_b, 0
 
 
 def preprocess(path):

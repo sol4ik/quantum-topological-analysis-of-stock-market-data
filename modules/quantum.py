@@ -17,7 +17,7 @@ def config_circuit(circuit, config_file):
     q = 0
 
     with open(config_file, 'r') as file:
-        for line in file.read_lines()[1:]:
+        for line in file.readlines()[1:]:
             comma = line.index(',')
             comma_2 = line.index(',', comma + 1)
             a = float(line[:comma])
@@ -37,19 +37,19 @@ def distance(circuit, c_bit, a, b):
     :param circuit: IBM Q circuit object
     """
     # controlled swap operator 6x6
-    cswap = Operator([1, 0, 0, 0, 0, 0],
-                     [0, 1, 0, 0, 0, 0],
-                     [0, 0, 0, 0, 1, 0],
-                     [0, 0, 0, 0, 0, 1],
-                     [0, 0, 1, 0, 0, 0],
-                     [0, 0, 0, 1, 0, 0])
+    cswap = Operator([[1, 0, 0, 0, 0, 0],
+                      [0, 1, 0, 0, 0, 0],
+                      [0, 0, 0, 0, 1, 0],
+                      [0, 0, 0, 0, 0, 1],
+                      [0, 0, 1, 0, 0, 0],
+                      [0, 0, 0, 1, 0, 0]])
 
     # |s0> = |0, a, b>
-    # 0 - controll bit
+    # 0 - control bit
     # a, b - to find dist between
 
     circuit.h(c_bit)
-    circuit.cswap(c_bit, a, b)
+    circuit.append(cswap, [c_bit, a, b])
     circuit.h(c_bit)
 
     # distance between a and b on the control bit
