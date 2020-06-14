@@ -1,5 +1,8 @@
 from qiskit import QuantumCircuit
 
+from qiskit.quantum_info.operators import Operator
+from qiskit.aqua.algorithms import Grover
+
 from numpy import pi
 
 
@@ -16,24 +19,50 @@ def config_circuit(circuit, config_file):
     with open(config_file, 'r') as file:
         for line in file.read_lines()[1:]:
             comma = line.index(',')
+            comma_2 = line.index(',', comma + 1)
             a = float(line[:comma])
-            b = float(line[comma + 1:])
+            b = float(line[comma + 1:comma_2])
+            phi = float(line[comma_2 + 1:])
 
-            circuit.u2(pi * a, pi * b, q)
+            circuit.u3(pi * a, pi * b, pi * phi, q)
             q += 1
 
-    # test case
-    # circuit.u3(pi * 0.5, pi * 0.5, pi * 0.5, 0)
-    # circuit.u3(pi / 2, pi / 2, pi / 2, 1)
-    # circuit.u3(pi / 2, pi / 2, pi / 2, 2)
+
+def distance(circuit, c_bit, a, b):
+    """
+    Calculate distances between 2 data points denoted as quantum states.
+
+    Based on DistCalc from  Quantum Machine Learning for data scientists.
+
+    :param circuit: IBM Q circuit object
+    """
+    # controlled swap operator 6x6
+    cswap = Operator([1, 0, 0, 0, 0, 0],
+                     [0, 1, 0, 0, 0, 0],
+                     [0, 0, 0, 0, 1, 0],
+                     [0, 0, 0, 0, 0, 1],
+                     [0, 0, 1, 0, 0, 0],
+                     [0, 0, 0, 1, 0, 0])
+
+    # |s0> = |0, a, b>
+    # 0 - controll bit
+    # a, b - to find dist between
+
+    circuit.h(c_bit)
+    circuit.cswap(c_bit, a, b)
+    circuit.h(c_bit)
+
+    # distance between a and b on the control bit
+    # circuit.measure(c_bit)
 
 
-def grovers_search(circuit):
+def grovers_search(circuit, n_qubits):
     """
     IBM Q implementation of Grover's search algorithm with multiple solutions
     implemented on 3 qubits.
     Needed to construct simplicial complex for data analysis.
-    :param circuit: IBM Q circuit object 
+    :param circuit: IBM Q circuit object
+    :param n_qubits: number of qubits on the circuit
     """
     circuit.x(0)
     circuit.x(1)
@@ -55,25 +84,12 @@ def grovers_search(circuit):
     circuit.h(1)
     circuit.h(2)
 
-    # circuit.measure([0, 1], [0, 1])
 
+def persistence_homology(circuit, n_qubits):
+    """
+    Perform quantum persistence homology algorithm,
+    :param circuit: IBM Q object
+    :param n_qubits: number of qubits on the circuit
+    """
+    grovers_search(circuit, n_qubits)
 
-if __name__ == "__main__":
-    with open("ibmq_token.txt", 'r') as token_file:
-        token = token_file.readlines()[0]
-    IBMQ.save_account(token)
-    
-    # specify any other IBM Q backend ypu want to use
-    simulator = Aer.get_backend('qasm_simulator')
-    
-    circuit = QuantumCircuit(3, 3)
-
-    grovers_search(circuit)
-
-    job = execute(circuit, simulator, shots=1000)
-    result = job.result()
-    counts = result.get_counts(circuit)
-
-    print("\nTotal count for states are:", counts)
-
-    plot_histogram(counts)
