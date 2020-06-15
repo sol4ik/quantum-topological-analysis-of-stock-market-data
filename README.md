@@ -76,6 +76,7 @@ Here is detailed quantum algorithm pipeline:
     * now that each quentum state ![|s_k>](https://latex.codecogs.com/gif.latex?%7Cs_k%3E) denotes a simpex from general data model, one needs to project ![|s_k>](https://latex.codecogs.com/gif.latex?%7Cs_k%3E) onto sum of its boundary simplices. Such a mapping is denoted by
     
     ![boundary mapping](https://latex.codecogs.com/gif.latex?%5Csigma_k%20%7Cs_k%3E%20%3D%20%5Csum_l%20%28-1%29%5El%20%7Cs_%7Bk%20-%201%7D%28l%29%3E)
+    
     where ![s_k_1(l)](https://latex.codecogs.com/gif.latex?%7Cs_%7Bk%20-%201%7D%28l%29%3E) is the k-th simplex without l-th vertix.
     * after boundary mapping is done, the general quantum state is denoted as ![sigma_k](https://latex.codecogs.com/gif.latex?%5Csigma_k)
     * at last, one wants to perform **quantum phase estimation** algorithm for the following Hermitian matrix
@@ -84,6 +85,7 @@ Here is detailed quantum algorithm pipeline:
     * now, each **Betti number** can be estimated as
     
     ![k-th Betti number](https://latex.codecogs.com/gif.latex?%5Cbeta_k%20%3D%20dim%20%5Ctext%7B%20Ker%20%7D%20%5Csigma_k%20&plus;%20dim%20%5Ctext%7B%20Ker%20%7D%20%5Csigma_%7Bk%20&plus;%201%7D%20-%20dim%20%5Cmathcal%7BH%7D_%7Bk&plus;1%7D)
+    
     where ![H_k+1](https://latex.codecogs.com/gif.latex?%5Cmathcal%7BH%7D_%7Bk&plus;1%7D) is the vector space spanned by vectoros ![s_k+1](https://latex.codecogs.com/gif.latex?%7Cs_%7Bk%20&plus;%201%7D%3E)
 11. plot the **Betti curve**, set **threshold value** and detect time periods when the crash happened
     * Betti curves produce quite noisy results and thus good crash estimation depends on threshold value chosen
