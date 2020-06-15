@@ -8,6 +8,7 @@ Here is a short description of the final project for Architecture of Computer Sy
 3. [why quantum?](#why-quantum)
 4. [algorithm](#algorithm)
 5. [quantum algorithm](#quantum-algorithm)
+    1. [time complexity](#time-complexity)
 6. [implementation details](#implementation-details)
     1. [limitations](#limitations)
     2. [circuits](#circuits)
@@ -72,10 +73,31 @@ Here is detailed quantum algorithm pipeline:
     * you can find detailed description of Grover's search algorithm [here](https://quantum-computing.ibm.com/docs/guide/q-algos/grover-s-algorithm)
     * main idea is to implement Grover's algorithm with **oracle** that allows multiple solutions, since multiple simplicial complexes can be cinstructed from a single data cloud
 10. perform **quantum persistent homology** algorithm
-    * 
+    * now that each quentum state ![|s_k>](https://latex.codecogs.com/gif.latex?%7Cs_k%3E) denotes a simpex from general data model, one needs to project ![|s_k>](https://latex.codecogs.com/gif.latex?%7Cs_k%3E) onto sum of its boundary simplices. Such a mapping is denoted by
+    
+    ![boundary mapping](https://latex.codecogs.com/gif.latex?%5Csigma_k%20%7Cs_k%3E%20%3D%20%5Csum_l%20%28-1%29%5El%20%7Cs_%7Bk%20-%201%7D%28l%29%3E)
+    where ![s_k_1(l)](https://latex.codecogs.com/gif.latex?%7Cs_%7Bk%20-%201%7D%28l%29%3E) is the k-th simplex without l-th vertix.
+    * after boundary mapping is done, the general quantum state is denoted as ![sigma_k](https://latex.codecogs.com/gif.latex?%5Csigma_k)
+    * at last, one wants to perform **quantum phase estimation** algorithm for the following Hermitian matrix
+    
+    ![B_k hermitian matrix](https://latex.codecogs.com/gif.latex?B_k%20%3D%20%5Cbegin%7Bpmatrix%7D%200%20%26%20%5Csigma_k%20%5C%5C%20%5Csigma_k%5E%7B%5Cdag%7D%20%26%200%20%5C%5C%20%5Cend%7Bpmatrix%7D)
+    * now, each **Betti number** can be estimated as
+    
+    ![k-th Betti number](https://latex.codecogs.com/gif.latex?%5Cbeta_k%20%3D%20dim%20%5Ctext%7B%20Ker%20%7D%20%5Csigma_k%20&plus;%20dim%20%5Ctext%7B%20Ker%20%7D%20%5Csigma_%7Bk%20&plus;%201%7D%20-%20dim%20%5Cmathcal%7BH%7D_%7Bk&plus;1%7D)
+    where ![H_k+1](https://latex.codecogs.com/gif.latex?%5Cmathcal%7BH%7D_%7Bk&plus;1%7D) is the vector space spanned by vectoros ![s_k+1](https://latex.codecogs.com/gif.latex?%7Cs_%7Bk%20&plus;%201%7D%3E)
 11. plot the **Betti curve**, set **threshold value** and detect time periods when the crash happened
     * Betti curves produce quite noisy results and thus good crash estimation depends on threshold value chosen
     * in the implementation proposed `threshold = 0.3`
+
+### time complexity
+Depending on the implementation time complexity of pesistent homology algorithm implementation cannot get beteer than ![O(2^2n)](https://latex.codecogs.com/gif.latex?O%282%5E%7B2n%7D%29)
+
+Quantum algorithm, developed by Lloyd, is estimated have time complexity ![O(n^3)](https://latex.codecogs.com/gif.latex?O%28n%5E3%29) with perfectly parallel access to qRAM.
+
+Due to IBM Q [limitations](#limitations) it is impossible to implement the whole algorithm at once, still it is possible to implement some parts of it with follwing time complexities:
+  
+  * Grover's serach algorithm - ![O(sqrt n)](https://latex.codecogs.com/gif.latex?O%28%5Csqrt%7Bn%7D%29)
+  * quantum qhase estimtion algorithm - ![O(1/epsilon)](https://latex.codecogs.com/gif.latex?O%281/%20%5Cepsilon%29) with ![epsilon](https://latex.codecogs.com/gif.latex?%5Cepsilon) being the additive error
 
 ## implementation details
 The quantum algorithm is implemented with [IBM Quantum Experience](https://quantum-computing.ibm.com/) as well as plain Python code.
@@ -94,8 +116,9 @@ All the source code can be found in the **modules** directory.
 When it comes to implementing the quantum persistent homology algorithm several limitations arise.
 
 * due coherence and high error rate it is possible to get concenient results only by working with **5-qubit** computers or **simulation**
-  * thus, it is possible to process **only three 2-dimnesional points** within the quantum implementation of the algorithm 
+  * thus, it is possible to process **only two 2-dimnesional points** within the quantum implementation of the algorithm 
 * IBM Q API **does not allow one to create custom gate for 3 qubits** which is needed for distances calculations
+* IBM Q does not provide parallel access to qRAM, thus time complexity estimated by LLoyd gets worse in real-life implementations
 * again, due to lack of computational accuracy and **qRAM** it is impossible to conveniently implement the calculation of quantum density matrix needed for further calculations of Betti numbers
 
 ### circuits
