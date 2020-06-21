@@ -1,4 +1,4 @@
 modules/ibmq_token.txt
 .idea/
-experiments/.ipynb_checkpoints
+algorithm/.ipynb_checkpoints
 modules/__pycache__
