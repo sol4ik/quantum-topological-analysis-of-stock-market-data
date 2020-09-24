@@ -38,7 +38,7 @@ As test data I chose the following cases and related data:
   + ^DJI from Jan 03 until Dec 31 2008
 * 2020 Coronavirus stock market crash
   + ^GSPC from Feb 03 until Apr 01 2020
-  + ^DJI from Feb 03 until Apr 01 2020
+  <!-- + ^DJI from Feb 03 until Apr 01 2020 -->
 
 Here's a short look at sample data file:
 ```{r}
